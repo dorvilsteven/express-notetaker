@@ -13,7 +13,7 @@ Welcome to the minimalistic server based note taker web app. Organize your thoug
 
 ## Installation
 
-[Express Note Taker](coming soon..)
+[Express Note Taker](https://express-note-taker-v1.herokuapp.com/)
 
 simply visit our webpage today
 
