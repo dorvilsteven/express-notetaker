@@ -32,9 +32,22 @@ function validate(body) {
     }
     return true;
 }
+
 function findById(id, array) {
     const result = array.filter((note) => note.id === id)[0];
     return result;
+}
+
+function deleteNote(id, array) {
+    const result = array.filter((note) => note.id === id)[0];
+    const index = array.indexOf(result);
+    array.splice(index, 1);
+
+    fs.writeFileSync(
+        path.join(__dirname, './db/db.json'),
+        JSON.stringify({notes: array}, null, 2)
+    );
+
 }
 
 
@@ -62,13 +75,20 @@ app.get('/api/notes/:id', (req, res) => {
 
 app.post('/api/notes', (req, res) => {
     let body = req.body;
-    body.id = notes.length.toString();
+    const random = Math.floor(Math.random() * notes.length);
+    body.id = ((notes.length + random) * notes.length).toString();
     if (!validate(body)) {
         res.status(400).send('The note is not properly formatted.');
     } else {
         const note = createNewNote(body, notes);
         res.json(note);
     }
+});
+
+app.delete('/api/notes/:id', (req, res) => {
+    console.log(`delete request - ${req.params.id}`);
+    const id = req.params.id;
+    deleteNote(id, notes);
 });
 
 app.get('*', (req, res) => {
